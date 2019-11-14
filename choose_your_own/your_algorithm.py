@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+import matplotlib
+matplotlib.use ('Agg')
+
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
@@ -28,7 +31,7 @@ plt.show()
 ################################################################################
 
 
-### your code here!  name your classifier object clf if you want the 
+### your code here!  name your classifier object clf if you want the
 ### visualization code (prettyPicture) to show you the decision boundary
 
 
@@ -39,6 +42,6 @@ plt.show()
 
 
 try:
-    prettyPicture(clf, features_test, labels_test)
+    prettyPicture(clf, features_test, labels_test, "test.png")
 except NameError:
     pass

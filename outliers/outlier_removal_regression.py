@@ -28,24 +28,21 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 
 ### fill in a regression here!  Name the regression object reg so that
 ### the plotting code below works, and you can see what your regression looks like
-
-
-
-
-
-
-
-
-
+from sklearn.linear_model import LinearRegression
+reg = LinearRegression()
+reg.fit(ages_train, net_worths_train)
+print "Slope: ", reg.coef_
+print "Intercept: ", reg.intercept_
+print "Accuracy score on test data: ", reg.score(ages_test, net_worths_test)
 
 
 try:
     plt.plot(ages, reg.predict(ages), color="blue")
 except NameError:
     pass
-plt.scatter(ages, net_worths)
-plt.show()
-
+plt.scatter(ages, net_worths, c="red")
+file_name = "ages_vs_net_worths"
+plt.savefig(file_name + ".png")
 
 ### identify and remove the most outlier-y points
 cleaned_data = []
@@ -71,16 +68,22 @@ if len(cleaned_data) > 0:
     ### refit your cleaned data!
     try:
         reg.fit(ages, net_worths)
-        plt.plot(ages, reg.predict(ages), color="blue")
+        plt.plot(ages, reg.predict(ages), color="black")
     except NameError:
         print "you don't seem to have regression imported/created,"
         print "   or else your regression object isn't named reg"
         print "   either way, only draw the scatter plot of the cleaned data"
+
+    print "## After cleaning 10% of outliers... "
+    print "Slope: ", reg.coef_
+    print "Intercept: ", reg.intercept_
+    print "Accuracy score on test data: ", reg.score(ages_test, net_worths_test)
+
     plt.scatter(ages, net_worths)
     plt.xlabel("ages")
     plt.ylabel("net worths")
-    plt.show()
-
+    # plt.show()
+    plt.savefig("ages_vs_net_worths_cleaned.png")
 
 else:
     print "outlierCleaner() is returning an empty list, no refitting to be done"

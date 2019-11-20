@@ -64,6 +64,18 @@ print "People with NO payment info: ", len(invalid_payments), " => ", len(invali
 invalid_payments_poi = {person: features for (person, features) in enron_data.items() if features["total_payments"] == "NaN" and features["poi"] == 1 }
 print "POIs with NO payment info: ", len(invalid_payments_poi), " => ", len(invalid_payments_poi) / float(len(pois))*100, "%"
 
+
+# remove TOTAL, it should not be in the list!
+enron_data.pop("TOTAL", 0)
+stock_options = [features["exercised_stock_options"] for features in enron_data.values() if (features["exercised_stock_options"] != "NaN")]
+print "Exercised stock options"
+#print sorted(stock_options)
+print "MIN: ", min(stock_options)
+print "MAX: ", max(stock_options)
+salary = [features["salary"] for features in enron_data.values() if (features["salary"] != "NaN")]
+print "Salary"
+print "MIN: ", min(salary)
+print "MAX: ", max(salary)
 #for person, features in enron_data.iteritems():
 #   if features["poi"]:
 #        print features["poi"], " - ", person, ": ", features["salary"]

@@ -46,6 +46,7 @@ data_dict = pickle.load( open("../final_project/final_project_dataset.pkl", "r")
 data_dict.pop("TOTAL", 0)
 
 
+
 ### the input features we want to use
 ### can be any key in the person-level dictionary (salary, director_fees, etc.)
 feature_1 = "salary"
@@ -56,7 +57,18 @@ poi  = "poi"
 #features_list = [poi, feature_1, feature_2, feature_3]
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list )
+from sklearn import preprocessing
+min_max_scaler = preprocessing.MinMaxScaler()
+min_max_scaler.fit(data)
+data = min_max_scaler.transform(data)
 poi, finance_features = targetFeatureSplit( data )
+
+# check rescaled value for sample value
+sample_dict = {"SAMPLE" : {"poi": 1, "salary" : 200000., "exercised_stock_options": 1000000.}}
+sample_data = featureFormat(sample_dict, features_list)
+print "Rescaled values for:"
+print sample_dict
+print min_max_scaler.transform(sample_data)
 
 
 ### in the "clustering with 3 features" part of the mini-project,
@@ -78,7 +90,7 @@ pred = cluster.predict(data)
 
 ### rename the "name" parameter when you change the number of features
 ### so that the figure gets saved to a different file
-file_name = "clusters_2_features.pdf"
+file_name = "clusters_2_features_min_max_scaled.pdf"
 #file_name = "clusters_3_features.pdf"
 
 try:

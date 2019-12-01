@@ -35,41 +35,59 @@ word_data = []
 ### temp_counter helps you only look at the first 200 emails in the list so you
 ### can iterate your modifications quicker
 temp_counter = 0
+# once emails have been processed, just load them from the pickle file
+process = False
+if process:
+    for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
+        for path in from_person:
+            ### only look at first 200 emails when developing
+            ### once everything is working, remove this line to run over full dataset
+            temp_counter += 1
+            # uncomment to speed up testing
+            #if temp_counter < 200:
+            if True:
+                path = os.path.join('..', path[:-1])
+                print path
+                email = open(path, "r")
 
+                ### use parseOutText to extract the text from the opened email
+                email_text = parseOutText(email)
 
-for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
-    for path in from_person:
-        ### only look at first 200 emails when developing
-        ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
-        if temp_counter < 200:
-            path = os.path.join('..', path[:-1])
-            print path
-            email = open(path, "r")
+                ### use str.replace() to remove any instances of the words
+                words_to_remove = ["sara", "shackleton", "chris", "germani"]
+                for word in words_to_remove:
+                    email_text = email_text.replace(word, "")
 
-            ### use parseOutText to extract the text from the opened email
+                ### append the text to word_data
+                word_data.append(email_text)
 
-            ### use str.replace() to remove any instances of the words
-            ### ["sara", "shackleton", "chris", "germani"]
+                ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+                from_data.append(0 if (name == "sara") else 1)
 
-            ### append the text to word_data
+                email.close()
 
-            ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+    print temp_counter, " emails processed"
+    print "Contents at #152 are:"
+    print word_data[152]
+    from_sara.close()
+    from_chris.close()
 
-
-            email.close()
-
-print "emails processed"
-from_sara.close()
-from_chris.close()
-
-pickle.dump( word_data, open("your_word_data.pkl", "w") )
-pickle.dump( from_data, open("your_email_authors.pkl", "w") )
+    pickle.dump( word_data, open("your_word_data.pkl", "w") )
+    pickle.dump( from_data, open("your_email_authors.pkl", "w") )
 
 
 
 
 
 ### in Part 4, do TfIdf vectorization here
+# load pickle into word_data (corpus)
+word_data = pickle.load(open("your_word_data.pkl", "rb"))
+from sklearn.feature_extraction.text import TfidfVectorizer
+vect = TfidfVectorizer(stop_words="english")
+result = vect.fit_transform(word_data)
+words = vect.get_feature_names()
+print "Found total words: ", len(words)
+print "Word at index #34597 is: ", words[34597]
+
 
 

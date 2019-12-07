@@ -54,7 +54,7 @@ if process:
                 email_text = parseOutText(email)
 
                 ### use str.replace() to remove any instances of the words
-                words_to_remove = ["sara", "shackleton", "chris", "germani"]
+                words_to_remove = ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]
                 for word in words_to_remove:
                     email_text = email_text.replace(word, "")
 
